@@ -1,5 +1,5 @@
 PFont myFont;
-final static int N = 10;
+final static int N_ENEMIES = 10;
 Enemy[] enemies;
 Player player;
 
@@ -11,42 +11,44 @@ void setup() {
   textFont(myFont, 32);
   textSize(20);
   
-  enemies = new Enemy[N];
+  enemies = new Enemy[N_ENEMIES];
   player = new Player();
   
-  for(int k = 0; k < enemies.length; k++){
+  for (int k = 0; k < enemies.length; k++) {
     int enemyID = (int)random(2);
-    int posx = (int)random(800);
-    int posy = (int)random(800);
-    PVector pos = new PVector(posx, posy);
+    int xpos = (int)random(800);
+    int ypos = (int)random(800);
+    PVector pos = new PVector(xpos, ypos);
     
-    if(enemyID == 0) {  
-      int health = 10;
+    if (enemyID == 0) {  
+      int life = 10;
       enemies[k] = new Zombie();
-      enemies[k].init(health, pos);
+      enemies[k].init(life, pos);
 
-    }else if(enemyID == 1) {
-      int health = 5;
+    } else if (enemyID == 1) {
+      int life = 5;
       enemies[k] = new Slime();
-          enemies[k].init(health, pos);
+          enemies[k].init(life, pos);
     }
   }
 }
 
-void draw(){
+void draw() {
   background(240);
-  for(int k = 0; k < enemies.length; k++){
+  rectMode(CENTER);
+  
+  for (int k = 0; k < enemies.length; k++) {
     enemies[k].update(player);
   }
   player.update();
   
-  for(int k = 0; k < enemies.length; k++){
+  for (int k = 0; k < enemies.length; k++) {
     enemies[k].draw(g);
   }
   player.draw(g);
   
   fill(0, 0, 0);
-  text("HP: " + player.health, width - 50, 20);
+  text("HP: " + player.currentLife, width - 50, 20);
   
   drawDirButton();
 }
@@ -68,41 +70,41 @@ void drawDirButton() {
   
   for (int k = 0; k < 4; k++) {
     PVector buttonPos = buttonOrigin.copy().add(dirs[k]);
-    if(buttonStates[k]){
+    if (buttonStates[k]) {
       fill(32);
-    }else{
+    } else {
       fill(248);
     }
     circle(buttonPos.x, buttonPos.y, 16);
   }
 }
 
-void keyPressed(){
-  if(keyCode == UP){
+void keyPressed() {
+  if (keyCode == UP) {
     upPressed = true;
   }
-  if(keyCode == DOWN){
+  if (keyCode == DOWN) {
     downPressed = true;
   }
-  if(keyCode == LEFT){
+  if (keyCode == LEFT) {
     leftPressed = true; 
   }
-  if(keyCode == RIGHT){
+  if (keyCode == RIGHT) {
     rightPressed = true;
   }
 }
 
-void keyReleased(){
-  if(keyCode == UP){
+void keyReleased() {
+  if (keyCode == UP) {
     upPressed = false;
   }
-  if(keyCode == DOWN){
+  if (keyCode == DOWN) {
     downPressed = false;
   }
-  if(keyCode == LEFT){
+  if (keyCode == LEFT) {
     leftPressed = false; 
   }
-  if(keyCode == RIGHT){
+  if (keyCode == RIGHT) {
     rightPressed = false;
   }
 }
