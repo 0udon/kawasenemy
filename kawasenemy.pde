@@ -16,8 +16,8 @@ void setup() {
   
   for (int k = 0; k < enemies.length; k++) {
     int enemyID = (int)random(2);
-    int xpos = (int)random(800);
-    int ypos = (int)random(800);
+    int xpos = (int)random(-400, 400);
+    int ypos = (int)random(-400, 400);
     PVector pos = new PVector(xpos, ypos);
     
     if (enemyID == 0) {  
@@ -36,6 +36,7 @@ void setup() {
 void draw() {
   background(240);
   rectMode(CENTER);
+  translate(400, 400);
   
   for (int k = 0; k < enemies.length; k++) {
     enemies[k].update(player);
@@ -59,7 +60,7 @@ boolean leftPressed = false;
 boolean rightPressed = false;
  
 void drawDirButton() {
-  PVector buttonOrigin = new PVector(width / 8.0, height / 8.0);
+  PVector buttonOrigin = new PVector(- width / 2.5, - height / 2.5);
   boolean[] buttonStates = new boolean[] {upPressed, downPressed, leftPressed, rightPressed};
   PVector[] dirs = new PVector[] {
     new PVector(0, -32),

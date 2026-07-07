@@ -10,7 +10,7 @@ class Player {
   Player() {
     maxLife = 20;
     currentLife = maxLife;
-    position = new PVector(width / 2, height / 2);  // 画面中央
+    position = new PVector(0, 0);  // 画面中央
     speed = 5;
     radius = 16;
   }
