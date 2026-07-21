@@ -3,6 +3,17 @@ final static int N_ENEMIES = 10;
 Enemy[] enemies;
 Player player;
 
+int gameFrameCount;
+int endFrame;
+
+enum PlayerState{
+  Dead,
+  Alive,
+}
+
+PlayerState playerState;
+
+
 void setup() {
   size(800, 800);
   
@@ -11,6 +22,61 @@ void setup() {
   textFont(myFont, 32);
   textSize(20);
   
+  initGame();
+}
+
+void draw() {
+  background(240);
+  rectMode(CENTER);
+  translate(400, 400);
+  
+  switch (playerState) {
+    case Alive:
+    
+      for (int k = 0; k < enemies.length; k++) {
+        enemies[k].update(player);
+      }
+      player.update();
+      
+      for (int k = 0; k < enemies.length; k++) {
+        enemies[k].draw(g);
+      }
+      player.draw(g);
+      
+      fill(0, 0, 0);
+      text("HP: " + player.currentLife, width / 2 * 0.5 , -height / 2 * 0.95);
+      
+      drawDirButton();
+   
+      countTime();
+      changePlayerState();
+      break;
+    case Dead:
+      showResult();
+      break;
+  }
+}
+
+void countTime(){
+  String time = nf((float)gameFrameCount / 60.0,3, 3);
+  // 時間のカウントを右上に表示
+  fill(0, 0, 0);
+  text("Time: "+ time  ,width / 2 * 0.8 , -height / 2 * 0.95);
+  gameFrameCount += 1;
+}
+
+void showResult(){ 
+  fill(0, 0, 0);
+  String time = nf((float)endFrame / 60.0, 3, 3);
+  text(time + "秒生き残りました．"  , 0, 0);
+}
+
+void initializeGameLater(){
+  delay(2000);
+  initGame();
+}
+
+void initGame(){
   enemies = new Enemy[N_ENEMIES];
   player = new Player();
   
@@ -29,30 +95,21 @@ void setup() {
       int life = 5;
       enemies[k] = new Slime();
           enemies[k].init(life, pos);
-    }
+    }    
+  }
+   playerState = PlayerState.Alive;
+};
+
+
+void changePlayerState(){
+  if (player.currentLife == 0){
+    
+    playerState = PlayerState.Dead;
+    endFrame = gameFrameCount;
+    thread("initializeGameLater");
   }
 }
 
-void draw() {
-  background(240);
-  rectMode(CENTER);
-  translate(400, 400);
-  
-  for (int k = 0; k < enemies.length; k++) {
-    enemies[k].update(player);
-  }
-  player.update();
-  
-  for (int k = 0; k < enemies.length; k++) {
-    enemies[k].draw(g);
-  }
-  player.draw(g);
-  
-  fill(0, 0, 0);
-  text("HP: " + player.currentLife, width - 50, 20);
-  
-  drawDirButton();
-}
 
 boolean upPressed = false;
 boolean downPressed = false;

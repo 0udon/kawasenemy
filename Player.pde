@@ -4,11 +4,11 @@ class Player {
   PVector position;
   float speed;
   float radius;
-  int damageMaxCoolTimeFrame = 120;
+  int damageMaxCoolTimeFrame = 60;
   int damageCoolTimeFrame;
   
   Player() {
-    maxLife = 20;
+    maxLife = 10;
     currentLife = maxLife;
     position = new PVector(0, 0);  // 画面中央
     speed = 5;
